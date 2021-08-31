@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}| {{user.username}} {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <section id="profile" class="section-padding">
+            <div class="container">
+                <div class="row gy-5 gx-5">
+                    <div class="col-md-3">
+                        <div class="profile-info">
+                            <img src="{{ user.profile.profile_pic.url }}" alt="">
+                            <h4>{{ user.first_name }} {{user.last_name}}</h4>
+
+                            
+                            <p><i>
+                                {% if user.profile.bio %}
+                                    {{ user.profile.bio }}
+                                {% else %}
+                                    Bio Not Available
+                                {% endif %}
+                            </i></p>
+
+                            
+                            <h5><i class="fas fa-briefcase"></i>
+                                {% if user.profile.work %}
+                                    {{ user.profile.work }}
+                                {% else %}
+                                    Work Info Not Available
+                                {% endif %}
+                            </h5>
+
+                            
+                            <p><i class="fas fa-map-marker-alt"></i>
+                                {% if user.profile.address %}
+                                    {{ user.profile.address }}
+                                {% else %}
+                                    Address Not Available   
+                                {% endif %}
+                            </p>
+
+                        </div>
+                        <div class="create-update">
+                            <a href="{% url 'create' %}" class="create-post b-transition">Create Post</a>
+                            <a href="{% url 'update' %}" class="update-profile b-transition">Update Profile</a>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="profile-posts">
+                            <div class="small-heading">
+                                <h3>My Posts</h3>
+                            </div>
+
+                            <div class="row gy-4">
+                                {% if user_posts %}
+                                            {% for user_post in user_posts %}
+                                                <div class="col-md-12">
+                                                    <div class="post-list">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                    <div class="post-list-img">
+                                                                        <a href="{% url 'detail' user_post.id %}">
+                                                                            <img src="{{ user_post.thumbnail.url }}" alt="">
+                                                                        </a>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                    <div class="post-list-content">
+                                                                        <a href="{% url 'detail' user_post.id %}" class="b-transition">
+                                                                            <h3>{{ user_post.title|safe|truncatewords:"10" }}</h3>
+                                                                        </a>
+                                                                        <span class="post-category {% if user_post.topic.id == 1 %}bg-info
+                                                                            {% elif user_post.topic.id == 2 %}bg-danger
+                                                                            {% elif user_post.topic.id == 3 %}bg-dark
+                                                                            {% elif user_post.topic.id == 4 %}bg-secondary
+                                                                            {% elif user_post.topic.id == 5 %}bg-primary
+                                                                            {% elif user_post.topic.id == 6 %}bg-success
+                                                                            {% endif %}">{{ user_post.topic }}
+                                                                        </span>
+                                                                        <span class="single-likes">
+                                                                            <i class="far fa-heart"></i> {{user_post.likes.count}}
+                                                                        </span>
+                                                                        <span class="single-comments">
+                                                                                <i class="far fa-comment-alt"></i> {{user_post.comment_set.count}}
+                                                                        </span>
+                                                                        <div class="post-info">
+                                                                            <div class="search-result-meta">
+                                                                                <span><img src="{{user_post.author.profile.profile_pic.url}}"></span>
+                                                                                <span>By - <a href="{% url 'profile' %}">{{ user_post.author }}</a></span>
+                                                                                <span>{{ user_post.date|date:" d M Y" }}</span>
+                                                                            </div>
+                                                                            
+                                                                            <div class="post-edit-delete">
+                                                                                <a href="{% url 'edit' user_post.id %}" class="post-edit">Edit Post</a>
+                                                                                <a href="{% url 'delete' user_post.id %}" class="post-delete">Delete Post</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        
+                                {% else %}
+                                <div class="col-md-12 text-center">
+                                        <h2>You haven't posted anything yet 😐</h2>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+{% endblock %}
+
+

@@ -1,0 +1,24 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bloggify {% block title %} {% endblock %}</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <!--Fontawesome -->
+    <link rel="stylesheet" href="{% static 'css/all.css' %}">
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <!-- Header -->
+    {% include 'partials/_header.html' %} {% block content %} {% endblock %}
+
+    <!-- Footer -->
+    {% include 'partials/_footer.html' %}
+
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+  </body>
+</html>

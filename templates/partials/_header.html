@@ -1,0 +1,68 @@
+{% load static %}
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand b-transition" href="{% url 'home' %}">bloggify</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse justify-content-between"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link b-transition" href="{% url 'blog' %}">All Posts</a>
+          </li>
+          {% for topic in topics %}
+            <li class="nav-item">
+              <a class="nav-link b-transition" href="{% url 'topic' topic.name %}">{{topic.name}}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <form action="{% url 'search' %}" method="GET" class="d-flex">
+          <input
+            required
+            class="form-control me-2 h-search-input b-transition"
+            name="query"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            
+          />
+          <button class="btn h-search-submit b-transition" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        {% if user.is_authenticated %}
+          <div class="h-profile">
+            <img src="{{request.user.profile.profile_pic.url}}" class="img-fluid" alt="" />
+            <a href="{% url 'profile' %}" class="b-transition">{{request.user}}</a>
+          </div>
+         {% endif %} 
+        <ul class="d-flex h-auth">
+          {% if user.is_authenticated %}
+            <li class="h-auth-item">
+              <a href="{% url 'logout' %}" class="h-auth-link b-transition">Logout</a>
+            </li>
+          {% else %}
+          <li class="h-auth-item">
+            <a href="{% url 'register' %}" class="h-auth-link b-transition">Create Account</a>
+          </li>
+          <li class="h-auth-item">
+            <a href="{% url 'login' %}" class="h-auth-link b-transition">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

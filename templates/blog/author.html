@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}| {{author.username}} {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <section id="profile" class="section-padding">
+            <div class="container">
+                <div class="row gy-5 gx-5">
+                    <div class="col-md-3">
+                        <div class="profile-info">
+                            <img src="{{ author.profile.profile_pic.url }}" alt="">
+                            <h4>{{ author.first_name }} {{author.last_name}}
+                            </h4>
+
+                            
+                            <p><i>
+                                {% if author.profile.bio %}
+                                    {{ author.profile.bio }}
+                                {% else %}
+                                    Bio Not Available
+                                {% endif %}
+                            </i></p>
+
+                            
+                            <h5><i class="fas fa-briefcase"></i>
+                                {% if author.profile.work %}
+                                    {{ author.profile.work }}
+                                {% else %}
+                                    Work Info Not Available
+                                {% endif %}
+                            </h5>
+
+                            
+                            <p><i class="fas fa-map-marker-alt"></i>
+                                {% if author.profile.address %}
+                                    {{ author.profile.address }}
+                                {% else %}
+                                    Address Not Available   
+                                {% endif %}
+                            </p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="profile-posts">
+                            <div class="small-heading">
+                                <h3>{{ author.first_name }} {{author.last_name}}'s Posts</h3>
+                            </div>
+
+                            <div class="row gy-4 gx-4">
+                                {% if author_posts %}
+                                            {% for author_post in author_posts %}
+                                                <div class="col-md-12">
+                                                    <div class="post-list">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                    <div class="post-list-img">
+                                                                        <a href="{% url 'detail' author_post.id %}">
+                                                                            <img src="{{ author_post.thumbnail.url }}" alt="">
+                                                                        </a>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                    <div class="post-list-content">
+                                                                        <a href="{% url 'detail' author_post.id %}" class="b-transition">
+                                                                            <h3>{{ author_post.title|safe|truncatewords:"10" }}</h3>
+                                                                        </a>
+                                                                        <span class="post-category {% if author_post.topic.id == 1 %}bg-info
+                                                                            {% elif author_post.topic.id == 2 %}bg-danger
+                                                                            {% elif author_post.topic.id == 3 %}bg-dark
+                                                                            {% elif author_post.topic.id == 4 %}bg-secondary
+                                                                            {% elif author_post.topic.id == 5 %}bg-primary
+                                                                            {% elif author_post.topic.id == 6 %}bg-success
+                                                                            {% endif %}">{{ author_post.topic }}
+                                                                        </span>
+                                                                        <span class="single-likes">
+                                                                            <i class="far fa-heart"></i> {{author_post.likes.count}}
+                                                                        </span>
+                                                                        <span class="single-comments">
+                                                                                <i class="far fa-comment-alt"></i> {{author_post.comment_set.count}}
+                                                                        </span>
+                                                                        <div class="search-result-meta">
+                                                                            <span><img src="{{author_post.author.profile.profile_pic.url}}"></span>
+                                                                            <span>By - <a href="{% url 'author' author_post.author.username %}">{{ author_post.author }}</a></span>
+                                                                            <span>{{ author_post.date|date:" d M Y" }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        
+                                {% else %}
+                                <div class="col-md-12 text-center">
+                                        <h2>{% if author.profile.first_name and author.profile.first_name %}
+                                            {{ author.profile.first_name }} {{author.profile.last_name}}
+                                         {% else %}
+                                             {{ author.username }}
+                                         {% endif %} Hasn't Posted anything yet. 🧐</h2>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+{% endblock %}
+

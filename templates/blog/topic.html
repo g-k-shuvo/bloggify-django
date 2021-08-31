@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}| {{topic_name}} {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <!-- Recent Posts Section  -->
+        <section id="recent_posts" class="section-padding">
+                <div class="container">
+                    <div class="small-heading">
+                        <h3>Posts in {{ topic_name }} Category</h3>
+                    </div>
+                        <div class="row gy-4 gx-4">
+                                {% if topic_posts %}
+                                        {% for topic_post in topic_posts %}
+                                                <div class="col-md-4">
+                                                        <div class="single-post">
+                                                                <div class="single-post-img">
+                                                                        <img src="{{ topic_post.thumbnail.url }}" class="img-fluid rounded" alt="">
+                                                                </div>
+                                                                <div class="single-post-content">
+                                                                        <div class="single-post-meta">
+                                                                                <div class="author">
+                                                                                        <div class="author-img">
+                                                                                                <img src="{{topic_post.author.profile.profile_pic.url}}" alt="">
+                                                                                        </div>
+                                                                                        <div class="author-info">
+                                                                                                Post By- <a href="{% url 'author' topic_post.author.username %}">{{ topic_post.author }}</a>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div class="post-date">
+                                                                                        <span class="date">{{ topic_post.date|date:" d M Y" }}</span>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="single-post-info">
+                                                                                <div class="single-post-category">
+                                                                                        <span class="post-category {% if topic_post.topic.id == 1 %}bg-info
+                                                                                        {% elif  topic_post.topic.id == 2 %}bg-danger
+                                                                                        {% elif  topic_post.topic.id == 3 %}bg-dark
+                                                                                        {% elif  topic_post.topic.id == 4 %}bg-secondary
+                                                                                        {% elif  topic_post.topic.id == 5 %}bg-primary
+                                                                                        {% elif  topic_post.topic.id == 6 %}bg-success
+                                                                                        {% endif %}">{{ topic_post.topic }}
+                                                                                        </span>
+                                                                                </div>
+                                                                                <div class="single-likes-comments">
+                                                                                        <span class="single-likes">
+                                                                                                <i class="far fa-heart"></i> {{topic_post.likes.count}}
+                                                                                        </span>
+                                                                                        <span class="single-comments">
+                                                                                                <i class="far fa-comment-alt"></i> {{topic_post.comment_set.count}}
+                                                                                        </span>
+                                                                                </div>
+                                                                        </div>
+                                                                        <h4><a href="{% url 'detail' topic_post.id %}" class="b-transition">{{ topic_post.title|safe|truncatewords:"12" }}</a></h4>
+                                                                        <a href="{% url 'detail' topic_post.id %}" class="read-full-post b-transition">Read Full Post</a>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        {% endfor %}
+
+
+                                {% else %}
+                                <div class="col-md-12 text-center">
+                                        <h2>No Posts Available in {{topic.name}} Category!</h2>
+                                </div>
+                                {% endif %}
+                        </div>
+
+                </div>
+        </section>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}| Home {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <!-- Feature Posts Section -->
+        <div id="featured-posts" class="section-padding">
+                <div class="container">
+                        <div class="row gy-4">
+                                {% if featured_posts %}
+                                        {% for featured_post in featured_posts %}
+                                        <div class="col-md-4">
+                                                <a href="{% url 'detail' featured_post.id %}" class="featured-post h-fp b-gradient" style="background-image: url('{{ featured_post.thumbnail.url }}');">
+                                                        <div class="featured-post-text">
+                                                                <span class="post-category {% if featured_post.topic.id == 1 %}bg-info
+                                                                {% elif  featured_post.topic.id == 2 %}bg-danger
+                                                                {% elif  featured_post.topic.id == 3 %}bg-dark
+                                                                {% elif  featured_post.topic.id == 4 %}bg-secondary
+                                                                {% elif  featured_post.topic.id == 5 %}bg-primary
+                                                                {% elif  featured_post.topic.id == 6 %}bg-success
+                                                                {% endif %}">{{ featured_post.topic }}</span>
+                                                                <h3>{{ featured_post.title|safe|truncatewords:"10" }}</h3>
+                                                                <div class="featured-post-meta">
+                                                                        <span class="date">{{ featured_post.date|date:" d M Y" }}</span>
+                                                                        <div class="featured-likes-comments">
+                                                                                <span class="featured-likes">
+                                                                                        <i class="far fa-heart"></i> {{featured_post.likes.count}}
+                                                                                </span>
+                                                                                <span class="featured-comments">
+                                                                                        <i class="far fa-comment-alt"></i> {{featured_post.comment_set.count}}
+                                                                                </span>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                </a>
+                                        </div>
+                                        {% endfor %}
+                                {% else %}
+                                        <div class="col-md-12 text-center">
+                                                <h2>No Posts Available! 😪</h2>
+                                        </div>
+                                {% endif %}
+                        </div>
+                </div>
+        </div>
+
+        <!-- Recent Posts Section  -->
+        <section id="recent_posts" class="section-padding">
+                <div class="container">
+                        <h2 class="section-heading">Recent Posts</h2>
+                        <div class="row gy-4 gx-4">
+                                {% if recent_posts %}
+                                        {% for recent_post in recent_posts %}
+                                                <div class="col-md-4">
+                                                        <div class="single-post">
+                                                                <div class="single-post-img">
+                                                                        <img src="{{ recent_post.thumbnail.url }}" class="img-fluid rounded" alt="">
+                                                                </div>
+                                                                <div class="single-post-content">
+                                                                        <div class="single-post-meta">
+                                                                                <div class="author">
+                                                                                        <div class="author-img">
+                                                                                                <img src="{{recent_post.author.profile.profile_pic.url}}" alt="">
+                                                                                        </div>
+                                                                                        <div class="author-info">
+                                                                                                Post By- <a href="{% url 'author' recent_post.author.username %}">{{ recent_post.author }}</a>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div class="post-date">
+                                                                                        <span class="date">{{ recent_post.date|date:" d M Y" }}</span>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="single-post-info">
+                                                                                <div class="single-post-category">
+                                                                                        <span class="post-category {% if recent_post.topic.id == 1 %}bg-info
+                                                                                        {% elif  recent_post.topic.id == 2 %}bg-danger
+                                                                                        {% elif  recent_post.topic.id == 3 %}bg-dark
+                                                                                        {% elif  recent_post.topic.id == 4 %}bg-secondary
+                                                                                        {% elif  recent_post.topic.id == 5 %}bg-primary
+                                                                                        {% elif  recent_post.topic.id == 6 %}bg-success
+                                                                                        {% endif %}">{{ recent_post.topic }}
+                                                                                        </span>
+                                                                                </div>
+                                                                                <div class="single-likes-comments">
+                                                                                        <span class="single-likes">
+                                                                                                <i class="far fa-heart"></i> {{recent_post.likes.count}}
+                                                                                        </span>
+                                                                                        <span class="single-comments">
+                                                                                                <i class="far fa-comment-alt"></i> {{recent_post.comment_set.count}}
+                                                                                        </span>
+                                                                                </div>
+                                                                        </div>
+                                                                        <h4><a href="{% url 'detail' recent_post.id %}" class="b-transition">{{ recent_post.title|safe|truncatewords:"12" }}</a></h4>
+                                                                        <a href="" class="read-full-post b-transition">Read Full Post</a>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        {% endfor %}
+
+
+                                                <div class="col-md-12">
+                                                        <a href="{% url 'blog' %}" class="read-all-btn b-transition">Read All Posts</a>
+                                                </div>
+
+                                {% else %}
+                                <div class="col-md-12 text-center">
+                                        <h2>No Posts Available! 😪</h2>
+                                </div>
+                                {% endif %}
+                        </div>
+
+                </div>
+        </section>
+
+{% endblock %}

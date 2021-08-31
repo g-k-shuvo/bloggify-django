@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}| Update {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <section id="register" class="section-padding">
+            <div class="container">
+                <div class="small-heading">
+                    <h3>Update Your Profile</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                            <form class="register-form" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="id_first_name" class="form-label">First Name</label>
+                                    {{user_update_form.first_name}}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_last_name" class="form-label">Last Name</label>
+                                    {{user_update_form.last_name}}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_bio" class="form-label">Bio</label>
+                                    {{profile_update_form.bio}}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_work" class="form-label">Work</label>
+                                    {{profile_update_form.work}}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_address" class="form-label">Address</label>
+                                    {{profile_update_form.address}}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="id_profile_pic" class="form-label">Change Profile Picture</label>
+                                    {{profile_update_form.profile_pic}}
+                                </div>
+
+                               
+                                <button type="submit" class="btn b-form-btn">Submit</button>
+                            </form>
+                            <p class="mt-4 form-extra">Already have an account? <a href="{% url 'login' %}" class="b-transition">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+{% endblock %}
+
+
+

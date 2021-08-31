@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}| "{{query}}" {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <!-- Recent Posts Section  -->
+        <section id="search_results" class="section-padding">
+                <div class="container">
+                    <div class="small-heading">
+                        <h3>Showing Results: "{{query}}"</h3>
+                    </div>
+                        <div class="row gy-4 gx-4">
+                                {% if search_results %}
+                                            {% for search_result in search_results %}
+                                                <div class="col-md-12">
+                                                    <div class="post-list">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                    <div class="post-list-img">
+                                                                        <a href="{% url 'detail' search_result.id %}">
+                                                                            <img src="{{ search_result.thumbnail.url }}" alt="">
+                                                                        </a>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                    <div class="post-list-content">
+                                                                        <a href="{% url 'detail' search_result.id %}" class="b-transition">
+                                                                            <h2>{{ search_result.title|safe|truncatewords:"12" }}</h2>
+                                                                        </a>
+                                                                        <span class="post-category {% if search_result.topic.id == 1 %}bg-info
+                                                                            {% elif search_result.topic.id == 2 %}bg-danger
+                                                                            {% elif search_result.topic.id == 3 %}bg-dark
+                                                                            {% elif search_result.topic.id == 4 %}bg-secondary
+                                                                            {% elif search_result.topic.id == 5 %}bg-primary
+                                                                            {% elif search_result.topic.id == 6 %}bg-success
+                                                                            {% endif %}">{{ search_result.topic }}
+                                                                        </span>
+                                                                        <span class="single-likes">
+                                                                            <i class="far fa-heart"></i> {{search_result.likes.count}}
+                                                                        </span>
+                                                                        <span class="single-comments">
+                                                                                <i class="far fa-comment-alt"></i> {{search_result.comment_set.count}}
+                                                                        </span>
+                                                                        <div class="search-result-meta">
+                                                                            <span><img src="{{search_result.author.profile.profile_pic.url}}"></span>
+                                                                            <span>By - <a href="{% url 'author' search_result.author.username %}">{{ search_result.author }}</a></span>
+                                                                            <span>{{ search_result.date|date:" d M Y" }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        
+                                {% else %}
+                                <div class="col-md-12 text-center">
+                                        <h2>0 Post Found in "{{query}}" keyword. 😐</h2>
+                                </div>
+                                {% endif %}
+                        </div>
+
+                </div>
+        </section>
+
+{% endblock %}

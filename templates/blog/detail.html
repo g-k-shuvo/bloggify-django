@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}| {{post.title}} {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <!-- Detail Section Intro -->
+        <section class="detail-intro overlay" style="background-image: linear-gradient(
+            rgba(0, 0, 0, 0.5), 
+            rgba(0, 0, 0, 0.5)
+          ), url({{post.thumbnail.url}});">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 mx-auto">
+                        <div class="detail-intro-content">
+                            <span class="post-category {% if post.topic.id == 1 %}bg-info
+                                {% elif post.topic.id == 2 %}bg-danger
+                                {% elif post.topic.id == 3 %}bg-dark
+                                {% elif post.topic.id == 4 %}bg-secondary
+                                {% elif post.topic.id == 5 %}bg-primary
+                                {% elif post.topic.id == 6 %}bg-success
+                                {% endif %}">{{ post.topic }}
+                            </span>
+                        <h1>{{ post.title }}</h1>
+                        <div class="detail-meta">
+                            <span><img src="{{post.author.profile.profile_pic.url}}"></span>
+                            <span>By - <a href="{% url 'author' post.author.username %}">{{ post.author }}</a></span>
+                            <span>{{ post.date|date:" d M Y" }}</span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="details" class="section-padding">
+            <div class="container">
+                <div class="row gy-5">
+                    <div class="col-md-9">
+                        <div class="detail-content">
+                            {{ post.body|safe }}
+                        </div>
+                        <div class="detail-info">
+                            <div class="like-area">
+                                {% if user.is_authenticated %}
+                                    <form action="{% url 'like' post.pk %}" class="like-form" method="POST">
+                                        {% csrf_token %}
+                                            {% if liked %}
+                                            <button type="submit" name="post_like" class="unlike-btn" value="{{ post.id }}">
+                                                <i class="b-transition fas fa-heart"></i>
+                                            </button>
+                                            {% else %}
+                                                <button type="submit" name="post_like" class="like-btn" value="{{ post.id }}">
+                                                    <i class="b-transition fas fa-heart"></i>
+                                                </button>
+                                            {% endif %}
+                                    </form>
+                                    <h5>{{ total_likes }} People liked this post </h5>
+                                {% else %}
+                                    <div class="like-form">
+                                                    <button disabled class="like-btn">
+                                                        <i class="b-transition fas fa-heart"></i>
+                                                    </button>
+                                    </div>
+                                    <h5>{{ total_likes }} People liked this post! 😀 <a href="#" class="b-transition">Sign In</a> to Like.</h5>
+                                {% endif %}
+                            </div>
+                            <hr>
+                            <div class="comment-form-area">
+                                <div class="small-heading">
+                                    <h3>Leave A Comment</h3>
+                                </div>
+                                <div class="comment-form-container">
+                                    {% if user.is_authenticated %}
+                                        <form class="comment-form" method="POST">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="id_body" class="form-label">Write Your Comment</label>
+                                                {{comment_form.body}}
+                                            </div>
+                                            <button type="submit" class="b-form-btn btn b-transition">Comment</button>
+                                        </form>
+                                    {% else %}
+                                    <h5>{{ total_comments }} People commented! 😀 <a href="#" class="b-transition">Sign In</a> to Comment.</h5>
+                                    {% endif %}
+                                </div>
+                                <hr>
+                                {% if comments %}
+                                <div class="comments-area">
+                                    <ul>
+                                        {% for comment in comments %}
+                                            <li>
+                                                <div class="comment-img">
+                                                    <img src="{{ comment.author.profile.profile_pic.url }}" alt="">
+                                                </div>
+                                                <div class="comment-body">
+                                                    <h5>{{ comment.author }}</h5>
+                                                    <p>{{ comment.body }}</p>
+                                                    <span class="date">{{ comment.date }}</span>
+                                                </div>       
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="detail-author">
+                            <img src="{{ post.author.profile.profile_pic.url }}" alt="">
+                            <h3>{{ post.author.first_name }} {{post.author.last_name}}</h3>
+                            <p><i>{{ post.author.profile.bio }}</i></p>
+                            <a href="{% url 'author' post.author.username %}" class="b-transition">Visit Profile</a>
+                        </div>
+                        {% if similar_posts %}
+                        <div class="detail-similar">
+                            <h3>Similar Posts</h3>
+                            <ul>
+                                {% for similar_post in similar_posts %}
+                                <li>
+                                    <a href="{% url 'detail' similar_post.id %}" class="similar-post">                                      
+                                        <img src="{{similar_post.thumbnail.url}}" class="img-fluid" alt=""> 
+                                        <h4>{{ similar_post.title }}</h4>                             
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        <div class="sidebar-topics">
+                            <h3>Topics</h3>
+                            <ul>
+                                {% for  topic, topic_post_count in topic_post_zipped %}
+                                    <li><a href="{% url 'topic' topic.name %}">{{ topic }}</a><span>( {{ topic_post_count.num_of_posts }} )</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+{% endblock %}
+

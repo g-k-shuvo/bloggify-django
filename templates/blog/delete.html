@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}| Delete - {{post.title}} {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <section id="delete-post" class="section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="small-heading">
+                            <h2>Are you want to delete this post: {{post.title}}</h2>
+                        </div>
+                            <form class="delete-form" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn b-transition delete-btn">Delete Post</button>
+                                <a class="btn b-transition cancel-btn" href="{% url 'profile' %}">Cancel</a>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+{% endblock %}
+

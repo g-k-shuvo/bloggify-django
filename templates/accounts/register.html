@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}| Register {% endblock %}
+
+{% block content %}
+
+        {% include 'partials/_alerts.html' %}
+
+        <section id="register" class="section-padding">
+            <div class="container">
+                <div class="small-heading">
+                    <h3>Create An Account</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                            <form class="register-form" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" name="first_name" class="form-control" id="firstName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" name="last_name" class="form-control" id="lastName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="userName" class="form-label">Username</label>
+                                    <input type="text" name="username" class="form-control" id="username">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="userEmail" class="form-label">Email address</label>
+                                    <input type="email" name="email" class="form-control" id="userEmail" aria-describedby="emailHelp">
+                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" name="password" class="form-control" id="password">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password1" class="form-label">Confirm Password</label>
+                                    <input type="password" name="password1" class="form-control" id="password1">
+                                </div>
+                                <button type="submit" class="btn b-form-btn">Sign Up</button>
+                            </form>
+                            <p class="mt-4 form-extra">Already have an account? <a href="{% url 'login' %}" class="b-transition">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+{% endblock %}
+
