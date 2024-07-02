@@ -1,2 +1,2 @@
-web: gunicorn bloggify.wsgi --log-file -
-python manage.py collectstatic --noinput;
+web: python manage.py collectstatic --noinput && gunicorn bloggify.wsgi:application --log-file -
+
